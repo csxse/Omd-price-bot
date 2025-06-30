@@ -44,7 +44,7 @@ async def on_ready():
             embed.add_field(name="💲 Price", value=f"${price}", inline=True)
             embed.add_field(name="📈 24h Change", value=f"{change}%", inline=True)
             embed.add_field(name="💰 Volume (24h)", value=f"${volume:,.2f}", inline=True)
-            
+
             embed.add_field(
                 name="📊 Chart",
                 value="[View on CoinMarketCap](https://coinmarketcap.com/currencies/onemilliondollars/)",
@@ -52,10 +52,19 @@ async def on_ready():
             )
             await text_channel.send(embed=embed)
 
-            # Voice Channel Update
+            # Voice Channel Update (preserves your custom text)
             voice_channel = client.get_channel(VOICE_CHANNEL_ID)
-            new_name = f"💰 OMD ${price}"
-            await voice_channel.edit(name=new_name)
+            if voice_channel:
+                current_name = voice_channel.name
+                # Remove old price in brackets if it exists, keep your custom text
+                if "($" in current_name:
+                    base_name = current_name.split(" ($")[0]
+                else:
+                    base_name = current_name
+
+                # Add new price in brackets
+                new_name = f"{base_name} (${price})"
+                await voice_channel.edit(name=new_name)
 
         except Exception as e:
             print(f"❌ Error: {e}")
