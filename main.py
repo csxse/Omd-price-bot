@@ -2,7 +2,6 @@ import discord
 import requests
 import asyncio
 import os
-from keep_alive import keep_alive
 
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 CMC_API_KEY = os.getenv("CMC_API_KEY")
@@ -137,8 +136,6 @@ async def on_resumed():
 async def on_error(event, *args, **kwargs):
     print(f"❌ Discord event error in {event}: {args}")
 
-# Start the keep-alive server for 24/7 operation
-keep_alive()
 
 # Start the Discord bot
 try:
